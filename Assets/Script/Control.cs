@@ -5,7 +5,6 @@ public class Control : MonoBehaviour {
 	private float clientHInput = 0;
 	private float clientVInput = 0;
 	private bool action = false;
-	private bool fire = false;
 	
 	void  Awake (){
 		Debug.Log("Awake");
@@ -19,6 +18,7 @@ public class Control : MonoBehaviour {
 	}	
 
 	void  OnGUI (){
+		AutoResize(800, 480);
 		if (Network.peerType == NetworkPeerType.Client){
 			GUILayout.Label("Connection status: Client!");
 			GUILayout.Label("Ping to server: "+Network.GetAveragePing(Network.connections[0]));
@@ -58,15 +58,21 @@ public class Control : MonoBehaviour {
 			// Multiply the normalized direction vector by the modified length
 			directionVector = directionVector * directionLength;
 		}
+		Debug.Log(networkView.viewID);
 		networkView.RPC("SendInput", RPCMode.Server, directionVector.x, directionVector.y, 
-													actionButton.Pressed, fireButton.Pressed);
+													actionButton.Pressed);
 	}
 	
+	public static void AutoResize(int screenWidth, int screenHeight)
+	{
+		Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
+		GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
+	}	
+	
 	[RPC]
-	void SendInput(float HInput, float VInput, bool actionButtonPressed, bool fireButtonPressed){
+	void SendInput(float HInput, float VInput, bool actionButtonPressed){
 		clientHInput = HInput;
 		clientVInput = VInput;
 		action = actionButtonPressed;
-		fire = fireButtonPressed;
 	}
 }

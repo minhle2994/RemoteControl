@@ -47,13 +47,35 @@ public class Generate : MonoBehaviour {
 	void Update () {
 	
 	}
-	
+					
 	[RPC]
 	void Spawn(NetworkViewID viewID)
 	{
 		GameObject clone = Instantiate(gamepadPrefab) as GameObject;
 		NetworkView nView;
 		nView = clone.GetComponent<NetworkView>();
-		nView.viewID = viewID;			
+		nView.viewID = viewID;	
+		float scaleX = (float) Screen.width / 800;
+		float scaleY = (float) Screen.height / 480;
+		
+		GameObject actionButton = clone.transform.Find("ActionButton").gameObject;
+		GameObject pressed = actionButton.transform.Find("a_pressed").gameObject;
+		GameObject up = actionButton.transform.Find("a_up").gameObject;
+		Rect newSize = new Rect(pressed.guiTexture.pixelInset.x * scaleX, 
+		                        pressed.guiTexture.pixelInset.y * scaleY,
+		                        pressed.guiTexture.pixelInset.width * scaleX,
+		                        pressed.guiTexture.pixelInset.height * scaleY);
+		pressed.guiTexture.pixelInset = newSize;                      
+		up.guiTexture.pixelInset = newSize;
+		
+		GameObject moveJoyStick = clone.transform.Find("MoveJoyStick").gameObject;
+		GameObject back = moveJoyStick.transform.Find("analog_back").gameObject;
+		GameObject front = moveJoyStick.transform.Find("analog_front").gameObject;
+		newSize = new Rect(back.guiTexture.pixelInset.x * scaleX, 
+		                   back.guiTexture.pixelInset.y * scaleY,
+		                   back.guiTexture.pixelInset.width * scaleX,
+		                   back.guiTexture.pixelInset.height * scaleY);
+		back.guiTexture.pixelInset = newSize;                      
+		front.guiTexture.pixelInset = newSize;					                                         			
 	}	
 }

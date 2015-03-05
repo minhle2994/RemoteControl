@@ -22,7 +22,8 @@ public class gamescript : MonoBehaviour {
 	
 	
 	void  OnGUI (){
-		
+		//Debug.Log("waiting scene");
+		AutoResize(800, 480);
 		if (Network.peerType == NetworkPeerType.Disconnected){
 			//We are currently disconnected: Not a client or host
 			GUILayout.Label("Connection status: We've (been) disconnected");
@@ -102,6 +103,12 @@ public class gamescript : MonoBehaviour {
 	void  OnPlayerDisconnected ( NetworkPlayer player  ){
 		Debug.Log("Player disconnected from: " + player.ipAddress+":" + player.port);
 		
+	}
+	
+	public static void AutoResize(int screenWidth, int screenHeight)
+	{
+		Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
+		GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
 	}
 	
 	[RPC]

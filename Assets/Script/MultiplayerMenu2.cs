@@ -15,7 +15,6 @@ public class MultiplayerMenu2 : MonoBehaviour {
     }
 
     void  Start (){
-
         //Default join values
         joinPort = MultiplayerFunctions.SP.defaultServerPort;
         joinIP = joinPW = "";
@@ -62,7 +61,10 @@ public class MultiplayerMenu2 : MonoBehaviour {
     }
 
     void OnGUI (){
-        GUILayout.Window(2, new Rect(Screen.width/ 2 - 600/2, Screen.height/2-550/2, 600, 550), WindowGUI, "");
+    	AutoResize(800, 480);
+		//Debug.Log(Screen.width + "   " + Screen.height);
+		GUILayout.Window(2, new Rect(800/20, 480/20, 
+			800*9/10, 480*9/10), WindowGUI, "");
     }
 
   
@@ -157,7 +159,7 @@ public class MultiplayerMenu2 : MonoBehaviour {
                 {
                     MultiplayerFunctions.SP.DirectConnect(joinIP, joinPort, joinPW, true, OnFinalFailedToConnect);
                 }
-                GUILayout.FlexibleSpace();
+                GUILayout.FlexibleSpace();	
                 GUILayout.EndHorizontal();
 
             }
@@ -486,7 +488,11 @@ public class MultiplayerMenu2 : MonoBehaviour {
         hasParsedHostListOnce = true;
     }
 
-
+	public static void AutoResize(int screenWidth, int screenHeight)
+	{
+		Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
+		GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
+	}
 
 public class MyHostData
 {
