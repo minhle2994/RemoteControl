@@ -5,8 +5,12 @@ public class Generate : MonoBehaviour {
 	public GameObject miloPrefab;
 	public GameObject otisPrefab;
 	public GameObject gamepadPrefab;
+	private float startTime = 0.0f;
+	public GameObject pad;
+	public bool hasFinishTut = false;
 	
 	void  Awake (){
+		startTime = Time.time;
 		//RE-enable the network messages now we've loaded the right level
 		Network.isMessageQueueRunning = true;
 		
@@ -18,6 +22,7 @@ public class Generate : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		startTime = Time.time;
 		if (Network.isServer){
 			NetworkViewID viewID = Network.AllocateViewID();
 			GameObject clone = Instantiate(miloPrefab) as GameObject;
@@ -45,7 +50,46 @@ public class Generate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (pad == null)
+			pad = GameObject.Find("GamePad(Clone)");
+		if (hasFinishTut == true && pad != null){
+			VCButtonBase actionButton = VCButtonBase.GetInstance("Action");
+			Debug.Log(actionButton == null);
+			if (actionButton.Pressed){
+				networkView.RPC("Select", RPCMode.Others);						
+				Network.isMessageQueueRunning = false;
+				Application.LoadLevel(Application.loadedLevel+1);
+			}
+		}
+			
+		if (Time.time - startTime > 1){
+			if (hasFinishTut == true && pad != null){
+				VCAnalogJoystickBase moveJoystick = VCAnalogJoystickBase.GetInstance("MoveJoyStick");
+				Vector2 directionVector = new Vector2(moveJoystick.AxisX, moveJoystick.AxisY);
+				if (directionVector != Vector2.zero){
+					// Get the length of the directon vector and then normalize it
+					// Dividing by the length is cheaper than normalizing when we already have the length anyway
+					var directionLength = directionVector.magnitude;
+					directionVector = directionVector / directionLength;
+					
+					// Make sure the length is no bigger than 1
+					directionLength = Mathf.Min(1.0f, directionLength);
+					
+					// Make the input vector more sensitive towards the extremes and less sensitive in the middle
+					// This makes it easier to control slow speeds when using analog sticks
+					directionLength = directionLength * directionLength;
+					
+					// Multiply the normalized direction vector by the modified length
+					directionVector = directionVector * directionLength;
+					
+					if (directionVector.x > 0)
+						networkView.RPC("NextMap", RPCMode.Server);
+					if (directionVector.x < 0)
+						networkView.RPC("PreviousMap", RPCMode.Server);						 	
+				}
+			}
+			startTime = Time.time;
+		}
 	}
 					
 	[RPC]
@@ -77,5 +121,28 @@ public class Generate : MonoBehaviour {
 		                   back.guiTexture.pixelInset.height * scaleY);
 		back.guiTexture.pixelInset = newSize;                      
 		front.guiTexture.pixelInset = newSize;					                                         			
-	}	
+	}
+		
+	[RPC]
+	void NextMap()
+	{
+	}
+	
+	[RPC]
+	void PreviousMap()
+	{
+	}
+	
+	[RPC]
+	void FinishTut()
+	{
+		hasFinishTut = true;
+	}
+	
+	[RPC]
+	void Select()
+	{
+		Network.isMessageQueueRunning = false;
+		Application.LoadLevel(Application.loadedLevel+1);
+	}
 }

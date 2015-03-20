@@ -58,7 +58,6 @@ public class Control : MonoBehaviour {
 			// Multiply the normalized direction vector by the modified length
 			directionVector = directionVector * directionLength;
 		}
-		Debug.Log(networkView.viewID);
 		networkView.RPC("SendInput", RPCMode.Server, directionVector.x, directionVector.y, 
 													actionButton.Pressed);
 	}
