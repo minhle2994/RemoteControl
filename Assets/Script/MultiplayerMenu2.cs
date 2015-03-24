@@ -14,13 +14,17 @@ public class MultiplayerMenu2 : MonoBehaviour {
     void  Start (){
         hostDataList = new List<MyHostData>();
         MultiplayerFunctions.SP.SetHostListDelegate(FullHostListReceived);
-
+		InvokeRepeating("FectchHost", 2.0f, 2.0f); 
     }
     
     void Update(){
 
     }
-   
+   	
+   	void FectchHost(){
+			MultiplayerFunctions.SP.FetchHostList();
+   	}
+   	
 	public void onClick(){
 		GameObject input = GameObject.FindGameObjectWithTag("CodeInput");
 		Text code = input.GetComponent<Text>();

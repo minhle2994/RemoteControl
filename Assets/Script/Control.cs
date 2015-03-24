@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Control : MonoBehaviour {
 	private float clientHInput = 0;
@@ -7,6 +8,8 @@ public class Control : MonoBehaviour {
 	private bool action = false;
 	public GameObject pauseButton;
 	public GameObject playButton;
+	public GameObject staminaBar;
+	public bool vibrate = false;
 	
 	void  Awake (){
 		Debug.Log("Awake");
@@ -23,31 +26,29 @@ public class Control : MonoBehaviour {
 		if (Network.isClient){
 			pauseButton = GameObject.FindGameObjectWithTag("PauseButton");
 			playButton = GameObject.FindGameObjectWithTag("PlayButton");
+			staminaBar = GameObject.FindGameObjectWithTag("Stamina");
 			playButton.SetActive(false);		
 		}
 	}
 		
-	void  OnGUI (){
-		AutoResize(800, 480);
-		if (Network.peerType == NetworkPeerType.Client){
-			GUILayout.Label("Connection status: Client!");
-			GUILayout.Label("Ping to server: "+Network.GetAveragePing(Network.connections[0]));
-		}	
-
-		if (Network.peerType == NetworkPeerType.Disconnected){
-			//We are currently disconnected: Not a client or host
-			GUILayout.Label("Connection status: We've (been) disconnected");
-			if(GUILayout.Button("Back")){
-				Application.LoadLevel(Application.loadedLevel-1);
-			}
-		}
-		if (GUILayout.Button ("Disconnect"))
-		{
-			Network.Disconnect();
-		}
-	}		
-	
 	void FixedUpdate() {
+		if (Network.peerType == NetworkPeerType.Disconnected){
+			Network.isMessageQueueRunning = false;
+			Application.LoadLevel(0);				
+		}
+		
+		staminaBar.GetComponent<Slider>().value -= 0.00025f;
+		Mathf.Clamp(staminaBar.GetComponent<Slider>().value, 0, 1);
+		if (staminaBar.GetComponent<Slider>().value < 0.1 && vibrate == false){
+			Handheld.Vibrate();
+			Handheld.Vibrate();
+			vibrate = true;
+		}
+		
+		if (staminaBar.GetComponent<Slider>().value > 0.1 && vibrate == true){
+			vibrate = false;
+		}
+		
 		VCAnalogJoystickBase moveJoystick = VCAnalogJoystickBase.GetInstance("MoveJoyStick");
 		VCButtonBase actionButton = VCButtonBase.GetInstance("Action");
 		Vector2 directionVector = new Vector2(moveJoystick.AxisX, moveJoystick.AxisY);
@@ -68,7 +69,7 @@ public class Control : MonoBehaviour {
 			directionVector = directionVector * directionLength;
 		}
 		networkView.RPC("SendInput", RPCMode.Server, directionVector.x, directionVector.y, 
-													actionButton.Pressed);
+		                	actionButton.Pressed, staminaBar.GetComponent<Slider>().value);
 	}
 	
 	public static void AutoResize(int screenWidth, int screenHeight)
@@ -90,12 +91,9 @@ public class Control : MonoBehaviour {
 		playButton.SetActive(false);
 		networkView.RPC("ResumeGame", RPCMode.Others);	
 	}
-		
+	
 	[RPC]
-	void SendInput(float HInput, float VInput, bool actionButtonPressed){
-		clientHInput = HInput;
-		clientVInput = VInput;
-		action = actionButtonPressed;
+	void SendInput(float HInput, float VInput, bool actionButtonPressed, float stamina){
 	}
 	
 	[RPC]
@@ -114,5 +112,11 @@ public class Control : MonoBehaviour {
 			pauseButton.SetActive(true);
 			playButton.SetActive(false);			
 		}
+	}
+	
+	[RPC]
+	void Eat(){
+		staminaBar.GetComponent<Slider>().value += 0.01f;	
+		Mathf.Clamp(staminaBar.GetComponent<Slider>().value, 0, 1);
 	}
 }

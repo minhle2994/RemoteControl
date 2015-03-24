@@ -17,8 +17,7 @@ public class PlayAndPause : MonoBehaviour {
 				GameObject playButton = GameObject.FindGameObjectWithTag("PlayButton");
 				//playButton.SetActive(false);						
 			}
-		}
-			
+		}	
 	}
 	
 	public void Pause(){

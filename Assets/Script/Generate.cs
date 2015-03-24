@@ -5,6 +5,8 @@ public class Generate : MonoBehaviour {
 	public GameObject miloPrefab;
 	public GameObject otisPrefab;
 	public GameObject gamepadPrefab;
+	public GameObject uiPrefab;
+	
 	private float startTime = 0.0f;
 	public GameObject pad;
 	public bool hasFinishTut = false;
@@ -120,7 +122,8 @@ public class Generate : MonoBehaviour {
 		                   back.guiTexture.pixelInset.width * scaleX,
 		                   back.guiTexture.pixelInset.height * scaleY);
 		back.guiTexture.pixelInset = newSize;                      
-		front.guiTexture.pixelInset = newSize;					                                         			
+		front.guiTexture.pixelInset = newSize;		
+		Instantiate(uiPrefab);			                                         						                                         			
 	}
 		
 	[RPC]
