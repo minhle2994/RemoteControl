@@ -5,6 +5,8 @@ public class Control : MonoBehaviour {
 	private float clientHInput = 0;
 	private float clientVInput = 0;
 	private bool action = false;
+	public GameObject pauseButton;
+	public GameObject playButton;
 	
 	void  Awake (){
 		Debug.Log("Awake");
@@ -16,7 +18,15 @@ public class Control : MonoBehaviour {
 			MultiplayerFunctions.SP.RegisterHost(GameSettings.serverTitle, GameSettings.description);
 		}
 	}	
-
+	
+	void Start () {
+		if (Network.isClient){
+			pauseButton = GameObject.FindGameObjectWithTag("PauseButton");
+			playButton = GameObject.FindGameObjectWithTag("PlayButton");
+			playButton.SetActive(false);		
+		}
+	}
+		
 	void  OnGUI (){
 		AutoResize(800, 480);
 		if (Network.peerType == NetworkPeerType.Client){
@@ -27,7 +37,7 @@ public class Control : MonoBehaviour {
 		if (Network.peerType == NetworkPeerType.Disconnected){
 			//We are currently disconnected: Not a client or host
 			GUILayout.Label("Connection status: We've (been) disconnected");
-			if(GUILayout.Button("Back to main menu")){
+			if(GUILayout.Button("Back")){
 				Application.LoadLevel(Application.loadedLevel-1);
 			}
 		}
@@ -40,7 +50,6 @@ public class Control : MonoBehaviour {
 	void FixedUpdate() {
 		VCAnalogJoystickBase moveJoystick = VCAnalogJoystickBase.GetInstance("MoveJoyStick");
 		VCButtonBase actionButton = VCButtonBase.GetInstance("Action");
-		VCButtonBase fireButton = VCButtonBase.GetInstance("Fire");
 		Vector2 directionVector = new Vector2(moveJoystick.AxisX, moveJoystick.AxisY);
 		if (directionVector != Vector2.zero){
 			// Get the length of the directon vector and then normalize it
@@ -68,10 +77,42 @@ public class Control : MonoBehaviour {
 		GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
 	}	
 	
+	public void OnPause(){
+		Time.timeScale = 0;
+		pauseButton.SetActive(false);
+		playButton.SetActive(true);
+		networkView.RPC("PauseGame", RPCMode.Others);
+	}
+
+	public void OnResume(){
+		Time.timeScale = 1;
+		pauseButton.SetActive(true);
+		playButton.SetActive(false);
+		networkView.RPC("ResumeGame", RPCMode.Others);	
+	}
+		
 	[RPC]
 	void SendInput(float HInput, float VInput, bool actionButtonPressed){
 		clientHInput = HInput;
 		clientVInput = VInput;
 		action = actionButtonPressed;
+	}
+	
+	[RPC]
+	void PauseGame(){
+		Time.timeScale = 0;
+		if (Network.isClient){
+			pauseButton.SetActive(false);
+			playButton.SetActive(true);			
+		}	
+	}
+	
+	[RPC]
+	void ResumeGame(){
+		Time.timeScale = 1;
+		if (Network.isClient){
+			pauseButton.SetActive(true);
+			playButton.SetActive(false);			
+		}
 	}
 }
