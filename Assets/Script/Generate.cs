@@ -93,7 +93,11 @@ public class Generate : MonoBehaviour {
 			startTime = Time.time;
 		}
 	}
-					
+		
+	public void Skip(){
+		networkView.RPC("SkipTut", RPCMode.Others);			
+	}
+				
 	[RPC]
 	void Spawn(NetworkViewID viewID)
 	{
@@ -148,4 +152,9 @@ public class Generate : MonoBehaviour {
 		Network.isMessageQueueRunning = false;
 		Application.LoadLevel(Application.loadedLevel+1);
 	}
+	
+	[RPC]
+	void SkipTut()
+	{
+	}	
 }
