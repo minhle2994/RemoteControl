@@ -14,24 +14,39 @@ Platform assembly: D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Manage
 Loading D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.062 seconds
+Platform assembly: D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\Photon3Unity3D.dll (this message is harmless)
+Loading D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
+- Completed reload, in  0.081 seconds
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 Platform assembly: D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\GameDevTool\unity3d\IC15\RemoteControl\Control_Data\Managed\System.dll (this message is harmless)
-0.8098748 OnMasterEevent: HostListReceived
+Can't execute Disconnect() while not connected. Nothing changed. State: PeerCreated
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-Binding to local socket 0.0.0.0
-Sending NAT type detection request, local port 56499
-TestConnect NAT test aborted; timeout
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+UnloadTime: 4.144641 ms
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-TestConnection result: testedUseNat=True connectionTestResult=Undetermined probingPublicIP=False hasTestedNAT=True testMessage=Undetermined NAT capabilities
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 393.
+Total: 1.113990 ms (FindLiveObjects: 0.020098 ms CreateObjectMapping: 0.009835 ms MarkObjects: 0.330134 ms  DeleteObjects: 0.079967 ms)
 
-Returning nat detection result to the user
+UnloadTime: 0.685499 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 380.
+Total: 1.027180 ms (FindLiveObjects: 0.019243 ms CreateObjectMapping: 0.017533 ms MarkObjects: 0.381450 ms  DeleteObjects: 0.018388 ms)
+
+UnloadTime: 3.098645 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 93 unused Assets to reduce memory usage. Loaded Objects now: 327.
+Total: 1.050272 ms (FindLiveObjects: 0.023947 ms CreateObjectMapping: 0.014111 ms MarkObjects: 0.350233 ms  DeleteObjects: 0.121448 ms)
+
+UnloadTime: 0.747506 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 393.
+Total: 0.692769 ms (FindLiveObjects: 0.014111 ms CreateObjectMapping: 0.009407 ms MarkObjects: 0.277107 ms  DeleteObjects: 0.050033 ms)
+

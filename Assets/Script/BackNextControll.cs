@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BackNextControll : MonoBehaviour {
+public class BackNextControll : Photon.MonoBehaviour {
 	public GameObject startPoint;
 	// Use this for initialization
 	void Start () {
@@ -14,7 +14,7 @@ public class BackNextControll : MonoBehaviour {
 	}
 	
 	public void Back(){
-		Network.isMessageQueueRunning = false;
+		PhotonNetwork.isMessageQueueRunning = false;
 		Application.LoadLevel(Application.loadedLevel-1);	
 	}
 	

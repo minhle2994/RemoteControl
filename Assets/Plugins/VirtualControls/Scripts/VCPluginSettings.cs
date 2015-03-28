@@ -31,10 +31,10 @@ public class VCPluginSettings
 	
 	public static bool EzguiEnabled(GameObject go)
 	{
-#if UNITY_WP8
-		// Note: WP8 Metro doesn't support Type.GetMember(), and will error out during building.
-		// We just assume EzguiEnabled in this case.
-		return true;
+#if UNITY_WP_8_1
+		 //Note: WP8 Metro doesn't support Type.GetMember(), and will error out during building.
+		 //We just assume EzguiEnabled in this case.
+		 return false;
 #else
 		if (typeof(SpriteRoot).GetMember(VCPluginSettings.kFakeMemberName).Length == 0)
 			return true;
@@ -49,10 +49,10 @@ public class VCPluginSettings
 	
 	public static bool NguiEnabled(GameObject go)
 	{
-#if UNITY_WP8
+#if UNITY_WP_8_1
 		// Note: WP8 Metro doesn't support Type.GetMember(), and will error out during building.
 		// We just assume EzguiEnabled in this case.
-		return true;
+		return false;
 #else
 		if (typeof(UISprite).GetMember(VCPluginSettings.kFakeMemberName).Length == 0)
 			return true;
