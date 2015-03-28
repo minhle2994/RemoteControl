@@ -29,7 +29,9 @@ public class MultiplayerMenu : Photon.MonoBehaviour {
 	}
 	
 	void OnJoinedLobby(){
-		
+		GameObject statusText = GameObject.FindGameObjectWithTag("StatusText");	
+		Text t = statusText.GetComponent<Text>();
+		t.text = "Enter code to join game";
 	}
 	
 	void OnJoinedRoom(){
@@ -63,7 +65,7 @@ public class MultiplayerMenu : Photon.MonoBehaviour {
 	[RPC]
 	void Waiting()
 	{	
-		GameObject text = GameObject.FindGameObjectWithTag("Text");
+		GameObject text = GameObject.FindGameObjectWithTag("StatusText");
 		text.GetComponent<Text>().text = "Waiting for other player";		
 	}	
 }

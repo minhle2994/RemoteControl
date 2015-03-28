@@ -21,7 +21,6 @@ public class Generate : Photon.MonoBehaviour {
 			
 		if (hasFinishTut == true && pad != null){
 			VCButtonBase actionButton = VCButtonBase.GetInstance("Action");
-			Debug.Log(actionButton == null);
 			if (actionButton.Pressed){
 				photonView.RPC("Select", PhotonTargets.Others);						
 				PhotonNetwork.isMessageQueueRunning = false;

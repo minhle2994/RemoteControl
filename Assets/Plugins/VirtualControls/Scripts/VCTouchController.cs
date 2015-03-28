@@ -45,9 +45,9 @@ public class VCTouchController : MonoBehaviour
 	private bool _activeTouchesCacheNeedsUpdate = false;
 	
 #if UNITY_EDITOR
-	private const int kMaxTouches = 6; // extra touch for mouse emulation
+	private const int kMaxTouches = 10; // extra touch for mouse emulation
 #else
-	private const int kMaxTouches = 5; // Unity doesn't support more than 5 touches.
+	private const int kMaxTouches = 10; // Unity doesn't support more than 5 touches.
 #endif
 	private const int kEmulatedTouchFingerId = 99999; // the fingerId we assign to the TouchWrapper that represents Mouse input in the Editor.
 	
